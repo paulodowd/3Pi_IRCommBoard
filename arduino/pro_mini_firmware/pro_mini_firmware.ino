@@ -6,9 +6,11 @@
 #include <Wire.h>
 #define I2C_ADDR 8
 
-boolean LED;
-unsigned long ts;
+boolean LED;      // debug LED
+unsigned long ts; // general time stamp, timeout for
+                  // debug LED.
 
+// Two operational states
 #define STATE_IR_TX_ON 1
 #define STATE_IR_TX_OFF 2
 int state = STATE_IR_TX_ON;
@@ -24,21 +26,24 @@ int rx_count;
 
 unsigned long msg_ttl; // msg time to live
 #define TTL 1000       // keep a message for 1 second
+                       // then delete. 
 
-unsigned long tx_ts;
-unsigned long tx_delay;
+unsigned long tx_ts;    // transmit time-stamp
+unsigned long tx_delay; // delay between tx
 
+// Flags
 boolean BROADCAST = false;
 boolean PROCESS_MSG = false;
 
 void setup() {
 
+  // Set random seed.
   initRandomSeed();
 
-  pinMode(9, OUTPUT);
-  digitalWrite(9, HIGH);
+  // Set pin for 38khz carrier as output
   pinMode(TX_CLK_OUT, OUTPUT);
 
+  // Debug led
   pinMode(13, OUTPUT);
 
   // Set message buffers to invalid (empty) state
@@ -46,14 +51,24 @@ void setup() {
   memset( rx_buf, 0, sizeof( rx_buf ));
   memset( rx_msg, 0, sizeof( rx_msg ));
 
+  // Setup Timer 2 to help generate a 38khz signal.
   setupTimer2();
 
+  // Begin I2C, note, as a slave device.
   Wire.begin( I2C_ADDR );
   Wire.onRequest( reportLastMessage );
   Wire.onReceive( newMessageToSend );
 
+  // Start Serial.  Note, here we are using
+  // serial to transmit strings over IR by
+  // modulating it with the 38khz carrier.
+  // The IR demodulator chip can support
+  // baud up to 4800, but other variants 
+  // might not.
   Serial.begin(4800);
   Serial.setTimeout(500);
+
+  // Set initial time-stamp values
   ts = millis();
   msg_ttl = millis();
 
@@ -64,8 +79,11 @@ void setup() {
 }
 
 
-// Use analogRead to set a random
-// seed for the RNG
+// Experiment to see if reading the LSB
+// of an analog read can generate a 
+// useful random seed.  Nothing connected
+// to A0.  I think the LSB fluctuates 
+// randomly(?)
 void initRandomSeed() {
   pinMode(A0, INPUT);
   byte r = 0x00;
@@ -146,8 +164,11 @@ byte CRC( String in_string ) {
   return cs;
 }
 
+// Over i2c to Master
 // Sends a string of the latest message received from
 // other robots.
+// If the buffer is empty, a ! character is sent. 
+// Note, a correct message should also end in !
 void reportLastMessage() {
 
   // No message.
@@ -158,6 +179,12 @@ void reportLastMessage() {
   }
 
 }
+
+// For IR.
+// Function to format a message for our
+// IR transmission.  We use:
+// * to indicate the start of a message
+// @ to indicate a checksum value following
 void newMessageToSend( int len ) {
   //Serial.println(len);
   //digitalWrite(13, HIGH);
@@ -203,9 +230,18 @@ void newMessageToSend( int len ) {
   state = STATE_IR_TX_ON;
 }
 
+
+// The arduino pro mini has a parallel serial
+// interface,meaning with IR it can receive
+// it's own tranmission. There, we access the 
+// UART register to disable RX functionality.
+// When we re-enable it, this has the beneficial
+// side-effect of clearing the input buffer.
 void disableRX() {
   UCSR0B &= ~( 1 << RXEN0 );
 }
+
+// Re-enable the serial port RX hardware.
 void enableRX() {
 
   UCSR0A &= ~(1 << FE0);
@@ -218,13 +254,10 @@ void enableRX() {
 // We need to stop the 38khz carrier
 // when no serial print is happening,
 // otherwise we saturate the environment
-// with a continuous 38khz pulse
+// with a continuous 38khz signal
 void disableTX() {
-
   // Set timer2 prescale to 0,0,0 (off)
   TCCR2B = 0;
-
-
 }
 
 void enableTX() {
@@ -233,6 +266,7 @@ void enableTX() {
   TCCR2B |= (1 << CS20);
 }
 
+// Clears our received buffer
 void resetRxBuf() {
   rx_count = 0;
   PROCESS_MSG = false;
@@ -242,36 +276,50 @@ void resetRxBuf() {
 void loop() {
 
 
+  // Toggle whether we are broadcasting
+  // or listening for IR messages
   if ( millis() - tx_ts > tx_delay ) {
     BROADCAST = !BROADCAST;
     tx_ts = millis();
+
+    // Set a different delay for next
+    // iteration
     setTXDelay();
   }
-  
+
+
+  // If we are in broadcast mode and the LEDS
+  // are active.
   if ( state == STATE_IR_TX_ON && BROADCAST) {
+
+    // If we have not received a message from
+    // the Master over i2c, do nothing.
     if ( tx_buf[0] == 0 ) {
       // don't send, empty buffer.
-    } else {
+      
+    } else { // Message from Master to send.
 
       // We have a problem where we pick up
       // our own reflected transmission.
       disableRX();
       //enableTX();
+
+      // Using Serial.print transmits over
+      // IR.  Serial TX is modulated with
+      // the 38Khz carrier in hardware. 
       Serial.println( tx_buf );
       Serial.flush(); // wait for send to complete
       //disableTX();
+
+      // With TX finished, we can receive again
+      // and not get our own transmission.
       enableRX();
 
-      //while( Serial.available() ) Serial.read();
-      //Serial.flush();
-      //digitalWrite(9, HIGH );
     }
   }
-  //
-  //}
 
 
-  // Clear old messages
+  // Clear old messages received via IR.
   if ( millis() - msg_ttl  > TTL ) {
     memset( rx_msg, 0, sizeof( rx_msg ) );
     msg_ttl = millis();
@@ -282,6 +330,7 @@ void loop() {
     ts = millis();
     digitalWrite( 13, LOW );
 
+    // Debug
     //Serial.print("last message: ");
     //Serial.print( rx_msg );
     //Serial.print(" ");
@@ -289,25 +338,42 @@ void loop() {
   }
 
 
+  // See if we have received over IR to
+  // process. 
+  resetRxBuf();
   while ( Serial.available() ) {
 
+    // If we find a newline, we flag we have
+    // a message to attempt to process.
     rx_buf[rx_count] = Serial.read();
     if ( rx_buf[ rx_count ] == '\n' ) PROCESS_MSG = true;
 
     rx_count++;
+
+    // If we exceed the buffer size, we also
+    // will try to process the message.
     if ( rx_count >= MAX_MSG ) PROCESS_MSG = true;
   }
 
+  // Do we think we have a message to process?
   if ( PROCESS_MSG ) {
 
+    // Debug
     //Serial.print("got "); Serial.print(rx_buf); Serial.print(":"); Serial.println(rx_count);
+
+    // Invalid conditions:
     if ( rx_count <= 0 || rx_buf[0] == 0 ) {
       // bad read.
       //Serial.println("bad serial");
-    } else {
+
+     
+    } else {  // Valid rx buf
 
       // Check for start byte
-      int start = -1;
+      int start = -1;  // -1 = default error state
+
+      // Search string for * symbol (start)
+      // Save index
       for ( int i = 0; i < rx_count; i++ ) {
         if ( rx_buf[i] == '*') {
           start = i;
@@ -317,15 +383,17 @@ void loop() {
 
       // Message too short or bad
       // e.g. a useless message would be:
-      //      *@_  (start,CRC token, CRC value)
-      //      n = 3 (message length)
-      //      start = 0
+      //      *abcdef@a  (start,message,CRC token, CRC value)
+      //      minimum (absurd) message would be *@_
+      //      min message length = 3
+      // if start < 0, then no * symbol was found
       if ( (rx_count - start) <= 3 || start < 0 ) {
         //Serial.println("message too short :(");
 
-      } else {
+      } else { // message valid, * index found
 
-        // Check CRC
+        // Check CRC, find @ token to separate
+        // out CRC value.
         int last = -1;
         for ( int i = 0; i < rx_count; i++ ) {
           if ( rx_buf[i] == '@') {
@@ -340,6 +408,7 @@ void loop() {
         if ( last > start && last < (rx_count - 1) ) {
           char buf[rx_count];
           int b = 0;  // count how many bytes
+          
           // we copy.
           for ( int i = start; i < last; i++ ) {
             buf[b] = rx_buf[i];
@@ -363,18 +432,32 @@ void loop() {
             cs &= 0xff;
 
             if ( cs == rx_buf[last + 1] ) {
+
+              // Debug
               //Serial.println("CRC GOOD!");
-              // Copy message across, ignoring the *
 
               // Flash so we can see when robots are
               // receiving messages correctly
               digitalWrite(13, HIGH );
 
+
+              // Make sure where we will store this
+              // received message is clear.
               memset( rx_msg, 0, sizeof( rx_msg ));
+              
+              // Copy message across, ignoring the *
               for ( int i = 0; i < b - 1; i++ ) {
                 rx_msg[i] = buf[i + 1];
               }
+
+              // Add a ! to the message, which will be
+              // used when later sending down I2C to 
+              // the Master to indicate the end of the
+              // string.
               rx_msg[b-1] = '!';
+
+              // Reset TTL timestamp, so this message
+              // will only exist temporarily.
               msg_ttl = millis();
 
             } else {
@@ -392,5 +475,4 @@ void loop() {
     resetRxBuf();
 
   }
-  //delay(50);
-}
+} // end of loop
