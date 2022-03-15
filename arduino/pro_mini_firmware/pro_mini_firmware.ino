@@ -17,11 +17,14 @@ int state = STATE_IR_TX_ON;
 
 
 #define MAX_MSG 32
-static char tx_buf[MAX_MSG];
-static char rx_buf[MAX_MSG];
-static char rx_msg[MAX_MSG];
+static char tx_buf[MAX_MSG];  // buffer for IR out (serial)
+static char rx_buf[MAX_MSG];  // buffer for IR in  (serial)
+static char rx_msg[MAX_MSG];  // holding buffer for msg down 
+                              // to Master over i2c
 int rx_count;
 
+// 38Khz signal generated on
+// digital pin 4.
 #define TX_CLK_OUT 4
 
 unsigned long msg_ttl; // msg time to live
