@@ -1,0 +1,447 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L SparkFun-Boards:ARDUINO_PRO_MINI B1
+U 1 1 6186B9DC
+P 4300 4250
+F 0 "B1" H 4300 5310 45  0000 C CNN
+F 1 "ARDUINO_PRO_MINI" H 4300 5226 45  0000 C CNN
+F 2 "Boards:ARDUINO_PRO_MINI" H 4300 5200 20  0001 C CNN
+F 3 "" H 4300 4250 50  0001 C CNN
+F 4 "XXX-00000" H 4300 5131 60  0000 C CNN "Field4"
+	1    4300 4250
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74LS32 U1
+U 1 1 6186D305
+P 1750 5600
+F 0 "U1" H 1750 5925 50  0000 C CNN
+F 1 "74LS32" H 1750 5834 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 1750 5600 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 1750 5600 50  0001 C CNN
+	1    1750 5600
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74LS32 U1
+U 2 1 6187231C
+P 1750 4950
+F 0 "U1" H 1750 5275 50  0000 C CNN
+F 1 "74LS32" H 1750 5184 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 1750 4950 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 1750 4950 50  0001 C CNN
+	2    1750 4950
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74LS32 U1
+U 4 1 61875212
+P 1750 4400
+F 0 "U1" H 1750 4725 50  0000 C CNN
+F 1 "74LS32" H 1750 4634 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 1750 4400 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 1750 4400 50  0001 C CNN
+	4    1750 4400
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74LS32 U1
+U 5 1 61876E4D
+P 1700 3100
+F 0 "U1" H 1930 3146 50  0000 L CNN
+F 1 "74LS32" H 1930 3055 50  0000 L CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 1700 3100 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 1700 3100 50  0001 C CNN
+	5    1700 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Interface_Optical:TSOP34S40F IR_RX1
+U 1 1 6187EB88
+P 1900 1800
+F 0 "IR_RX1" H 1888 2225 50  0000 C CNN
+F 1 "TSOP34S40F" H 1888 2134 50  0000 C CNN
+F 2 "OptoDevice:Vishay_MOLD-3Pin" H 1850 1425 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/82669/tsop32s40f.pdf" H 2550 2100 50  0001 C CNN
+	1    1900 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-Connectors:CONN_02JST-PTH-2 RX_Break1
+U 1 1 61882E8B
+P 3100 3300
+F 0 "RX_Break1" H 3058 3710 45  0000 C CNN
+F 1 "RX_BREAK" H 3058 3626 45  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 3100 3600 20  0001 C CNN
+F 3 "" H 3100 3300 50  0001 C CNN
+F 4 "CONN-09863" H 3058 3531 60  0000 C CNN "Field4"
+	1    3100 3300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3850 3850 3450 3850
+Wire Wire Line
+	3450 3850 3450 3600
+Wire Wire Line
+	3450 2950 5100 2950
+Wire Wire Line
+	5100 2950 5100 3650
+Wire Wire Line
+	5100 3650 4750 3650
+Wire Wire Line
+	3200 3650 3200 3300
+Wire Wire Line
+	3200 3200 3200 1800
+Wire Wire Line
+	3200 1800 2300 1800
+Wire Wire Line
+	2300 2000 3450 2000
+Wire Wire Line
+	3450 2000 3450 2650
+Connection ~ 3450 2950
+Wire Wire Line
+	4750 3850 5650 3850
+Wire Wire Line
+	5650 3850 5650 2600
+Wire Wire Line
+	5650 1600 2300 1600
+Wire Wire Line
+	1700 2600 5650 2600
+Connection ~ 5650 2600
+Wire Wire Line
+	5650 2600 5650 1600
+Wire Wire Line
+	1700 3600 2050 3600
+Connection ~ 3450 3600
+Wire Wire Line
+	3450 3600 3450 2950
+$Comp
+L SparkFun-Connectors:CONN_02JST-PTH-2 3PI_5V1
+U 1 1 61898A94
+P 6550 2500
+F 0 "3PI_5V1" H 6508 2910 45  0000 C CNN
+F 1 "3PI_5V" H 6508 2826 45  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 6550 2800 20  0001 C CNN
+F 3 "" H 6550 2500 50  0001 C CNN
+F 4 "CONN-09863" H 6508 2731 60  0000 C CNN "Field4"
+	1    6550 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-Connectors:CONN_02JST-PTH-2 3PI_GND1
+U 1 1 618992A9
+P 6550 3200
+F 0 "3PI_GND1" H 6508 3610 45  0000 C CNN
+F 1 "3PI_GND" H 6508 3526 45  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 6550 3500 20  0001 C CNN
+F 3 "" H 6550 3200 50  0001 C CNN
+F 4 "CONN-09863" H 6508 3431 60  0000 C CNN "Field4"
+	1    6550 3200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6650 2400 6900 2400
+Wire Wire Line
+	6900 2400 6900 2500
+Wire Wire Line
+	6900 2500 6650 2500
+Wire Wire Line
+	6650 3100 6900 3100
+Wire Wire Line
+	6900 3100 6900 3200
+Wire Wire Line
+	6900 3200 6650 3200
+Wire Wire Line
+	6900 2400 6900 1600
+Wire Wire Line
+	6900 1600 5650 1600
+Connection ~ 6900 2400
+Connection ~ 5650 1600
+Wire Wire Line
+	6900 3100 6900 2650
+Wire Wire Line
+	6900 2650 3450 2650
+Connection ~ 6900 3100
+Connection ~ 3450 2650
+Wire Wire Line
+	3450 2650 3450 2950
+Wire Wire Line
+	7250 3350 7450 3350
+Wire Wire Line
+	7450 3150 7150 3150
+Wire Wire Line
+	7150 3150 7150 3400
+Wire Wire Line
+	5950 3150 5950 3400
+Wire Wire Line
+	5950 3400 7150 3400
+Wire Wire Line
+	3850 4150 3600 4150
+Wire Wire Line
+	3600 4150 3600 5300
+$Comp
+L SparkFun-Connectors:CONN_03 1KP1
+U 1 1 618A6D51
+P 7550 2000
+F 0 "1KP1" H 7508 2510 45  0000 C CNN
+F 1 "1K_POT" H 7508 2426 45  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 7550 2400 20  0001 C CNN
+F 3 "" H 7550 2000 50  0001 C CNN
+F 4 "XXX-00000" H 7508 2331 60  0000 C CNN "Field4"
+	1    7550 2000
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-Connectors:CONN_03 1KPM1
+U 1 1 618A7B5F
+P 7550 2500
+F 0 "1KPM1" H 7508 3010 45  0000 C CNN
+F 1 "1KPM" H 7508 2926 45  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 7550 2900 20  0001 C CNN
+F 3 "" H 7550 2500 50  0001 C CNN
+F 4 "XXX-00000" H 7508 2831 60  0000 C CNN "Field4"
+	1    7550 2500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7650 1800 7950 1800
+Wire Wire Line
+	7950 1800 7950 2300
+Wire Wire Line
+	7950 2300 7650 2300
+Wire Wire Line
+	7650 1900 7900 1900
+Wire Wire Line
+	7900 1900 7900 2400
+Wire Wire Line
+	7900 2400 7650 2400
+Wire Wire Line
+	7650 2000 7850 2000
+Wire Wire Line
+	7850 2000 7850 2500
+Wire Wire Line
+	7850 2500 7650 2500
+$Comp
+L SparkFun-Resistors:RESISTOR0402 R1
+U 1 1 618C65B8
+P 8700 1200
+F 0 "R1" H 8700 1500 45  0000 C CNN
+F 1 "R18" H 8700 1416 45  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 8700 1350 20  0001 C CNN
+F 3 "" H 8700 1200 60  0001 C CNN
+F 4 " " H 8700 1321 60  0000 C CNN "Field4"
+	1    8700 1200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6900 1600 6900 1200
+Wire Wire Line
+	6900 1200 8500 1200
+Connection ~ 6900 1600
+Wire Wire Line
+	8900 1200 8900 1800
+Wire Wire Line
+	8900 1800 7950 1800
+Connection ~ 7950 1800
+$Comp
+L SparkFun-Connectors:CONN_02JST-PTH-2 IR_LED1
+U 1 1 618CF0BA
+P 9250 3300
+F 0 "IR_LED1" H 9208 3710 45  0000 C CNN
+F 1 "IR_LED1" H 9208 3626 45  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 9250 3600 20  0001 C CNN
+F 3 "" H 9250 3300 50  0001 C CNN
+F 4 "CONN-09863" H 9208 3531 60  0000 C CNN "Field4"
+	1    9250 3300
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-Connectors:CONN_02JST-PTH-2 IR_LED2
+U 1 1 618CF99A
+P 9250 3900
+F 0 "IR_LED2" H 9208 4310 45  0000 C CNN
+F 1 "IR_LED2" H 9208 4226 45  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 9250 4200 20  0001 C CNN
+F 3 "" H 9250 3900 50  0001 C CNN
+F 4 "CONN-09863" H 9208 4131 60  0000 C CNN "Field4"
+	1    9250 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-Connectors:CONN_02JST-PTH-2 IR_LED3
+U 1 1 618D076B
+P 9250 4500
+F 0 "IR_LED3" H 9208 4910 45  0000 C CNN
+F 1 "IR_LED3" H 9208 4826 45  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 9250 4800 20  0001 C CNN
+F 3 "" H 9250 4500 50  0001 C CNN
+F 4 "CONN-09863" H 9208 4731 60  0000 C CNN "Field4"
+	1    9250 4500
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-Connectors:CONN_02JST-PTH-2 IR_LED4
+U 1 1 618D101B
+P 9250 5100
+F 0 "IR_LED4" H 9208 5510 45  0000 C CNN
+F 1 "IR_LED4" H 9208 5426 45  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 9250 5400 20  0001 C CNN
+F 3 "" H 9250 5100 50  0001 C CNN
+F 4 "CONN-09863" H 9208 5331 60  0000 C CNN "Field4"
+	1    9250 5100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9350 2800 9600 2800
+Wire Wire Line
+	9600 2800 9600 3300
+Wire Wire Line
+	9600 3300 9350 3300
+Wire Wire Line
+	9600 3300 9600 3900
+Wire Wire Line
+	9600 3900 9350 3900
+Connection ~ 9600 3300
+Wire Wire Line
+	9600 3900 9600 4500
+Wire Wire Line
+	9600 4500 9350 4500
+Connection ~ 9600 3900
+Wire Wire Line
+	9600 4500 9600 5100
+Wire Wire Line
+	9600 5100 9350 5100
+Connection ~ 9600 4500
+Wire Wire Line
+	9350 2700 9750 2700
+Wire Wire Line
+	9750 2700 9750 3200
+Wire Wire Line
+	9750 3200 9350 3200
+Wire Wire Line
+	9750 3200 9750 3800
+Wire Wire Line
+	9750 3800 9350 3800
+Connection ~ 9750 3200
+Wire Wire Line
+	9750 3800 9750 4400
+Wire Wire Line
+	9750 4400 9350 4400
+Connection ~ 9750 3800
+Wire Wire Line
+	9750 4400 9750 5000
+Wire Wire Line
+	9750 5000 9350 5000
+Connection ~ 9750 4400
+Wire Wire Line
+	7900 1900 9750 1900
+Wire Wire Line
+	9750 1900 9750 2700
+Connection ~ 7900 1900
+Connection ~ 9750 2700
+Wire Wire Line
+	9600 5100 9600 5450
+Wire Wire Line
+	9600 5450 8400 5450
+Connection ~ 9600 5100
+Wire Wire Line
+	3600 5300 7250 5300
+Wire Wire Line
+	1450 4300 1450 4500
+Wire Wire Line
+	2050 4400 2050 3900
+Connection ~ 2050 3600
+Wire Wire Line
+	2050 3600 3450 3600
+Wire Wire Line
+	1450 4300 1450 3900
+Wire Wire Line
+	1450 3900 2050 3900
+Connection ~ 1450 4300
+Connection ~ 2050 3900
+Wire Wire Line
+	2050 3900 2050 3600
+Wire Wire Line
+	1450 4850 1450 5050
+Wire Wire Line
+	2050 5600 2050 4950
+Wire Wire Line
+	2050 4400 2050 4950
+Connection ~ 2050 4400
+Connection ~ 2050 4950
+Wire Wire Line
+	1450 4500 1450 4850
+Connection ~ 1450 4500
+Connection ~ 1450 4850
+Wire Wire Line
+	7250 5300 7250 3350
+Wire Wire Line
+	3850 3550 3850 3150
+Wire Wire Line
+	8400 3250 8400 5450
+Wire Wire Line
+	1450 5700 1450 5500
+Wire Wire Line
+	1450 5050 1450 5500
+Connection ~ 1450 5050
+Connection ~ 1450 5500
+$Comp
+L 74xx:74LS32 U1
+U 3 1 61873BF1
+P 7750 3250
+F 0 "U1" H 7750 3575 50  0000 C CNN
+F 1 "74LS32" H 7750 3484 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 7750 3250 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 7750 3250 50  0001 C CNN
+	3    7750 3250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8050 3250 8400 3250
+$Comp
+L SparkFun-Connectors:CONN_02JST-PTH-2 IR_LED0
+U 1 1 618CEB33
+P 9250 2800
+F 0 "IR_LED0" H 9208 3210 45  0000 C CNN
+F 1 "IR_LED0" H 9208 3126 45  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 9250 3100 20  0001 C CNN
+F 3 "" H 9250 2800 50  0001 C CNN
+F 4 "CONN-09863" H 9208 3031 60  0000 C CNN "Field4"
+	1    9250 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-Connectors:CONN_02JST-PTH-2 3PI_I2C1
+U 1 1 6227A271
+P 3050 4850
+F 0 "3PI_I2C1" H 3008 5260 45  0000 C CNN
+F 1 "3PI_I2C" H 3008 5176 45  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 3050 5150 20  0001 C CNN
+F 3 "" H 3050 4850 50  0001 C CNN
+F 4 "CONN-09863" H 3008 5081 60  0000 C CNN "Field4"
+	1    3050 4850
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	3850 4850 3150 4850
+Wire Wire Line
+	3850 4950 3150 4950
+Wire Wire Line
+	3200 3650 3850 3650
+Wire Wire Line
+	3850 3150 5950 3150
+$EndSCHEMATC
