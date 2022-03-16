@@ -2,7 +2,10 @@
 
 ## Features
 
-- ...
+- Can be considered a general purpose I2C extension board to provide local infra-red (IR) communication.
+- IR Serial transmission at 4800 Baud.
+- Transmit/receive upto 29 bytes (currently, extensible).
+- Message corruption detection implemented with a CRC checksum.
 
 ## Summary
 
