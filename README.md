@@ -1,5 +1,5 @@
 # 3Pi_IRCommBoard
-A pcb design to create infra-red communication between Pololu 3Pi+ robots. 
+A pcb design to create infra-red (IR) communication between Pololu 3Pi+ robots. The design utilises an Arduino Pro Mini as an I2C Slave device.  The pro mini handles all transmit and receive operations over IR. 
 
 Software is still very sketchy early work that has passed proof-of-concept.
 
