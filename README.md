@@ -9,7 +9,7 @@ The message strings transmitted between the pro mini devices would look somethin
 
 `*message string@f`
 
-Here, the `*` is used to identify the start of a message, the `@` is used to identify the end of the message and that the next byte is the checksum value.  The transmission is also made with a `\n` character at the end, but this is discarded.  
+Here, the `*` is used to identify the start of a message, the `@` is used to identify the end of the message and that the next byte is the checksum value.  In the example above, I haven't used the correct checksum value, it is just an illustrative example.  The transmission is also made with a `\n` character at the end, but this is discarded.  
 
 
 
