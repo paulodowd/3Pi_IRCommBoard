@@ -5,6 +5,7 @@
 - Can be considered a general purpose I2C extension board to provide local infra-red (IR) communication.
 - IR Serial transmission at 4800 Baud.
 - Transmit/receive upto 29 bytes (currently, extensible).
+- Range can be reduced/set with a trimmer potentiometer.
 - Message corruption detection implemented with a CRC checksum.
 - Designed to conveniently fit to an expansion header of the Pololu 3Pi+ mobile robot. 
 
