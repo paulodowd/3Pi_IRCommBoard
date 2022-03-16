@@ -343,14 +343,24 @@ void loop() {
 
   // See if we have received over IR to
   // process. 
-  resetRxBuf();
-  while ( Serial.available() ) {
+  while ( Serial.available() && !PROCESS_MSG ) {
 
     // If we find a newline, we flag we have
     // a message to attempt to process.
     rx_buf[rx_count] = Serial.read();
     if ( rx_buf[ rx_count ] == '\n' ) PROCESS_MSG = true;
 
+
+    // Note that, it might seem like rx_count will
+    // exceed the buffer. The next check should 
+    // catch this, and cause the buffer to be 
+    // processed.  We don't zero rx_count on each
+    // call of loop() because we may only have a
+    // few characters in the Serial buffer.  So we
+    // need to incrementally fill our rx_buf with
+    // many calls to this while loop.
+    // Processing the message will reset rx_count
+    // to 0.
     rx_count++;
 
     // If we exceed the buffer size, we also
