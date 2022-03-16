@@ -5,6 +5,12 @@ IR communication is implemented using the standard Serial functionality common t
 
 Some messages transmitted over IR do get garbled.  As a quick solution, the firmware uses a CRC checksum.  I've used the same implementation as detailed on the RepRap wiki for GCode (<a href="https://reprap.org/wiki/G-code#Checking">here</a>).  Prior to transmitting, the pro mini generates a single byte checksum value, and appends this to the message string.  Therefore, when a message is received, the receiving pro mini completes the same CRC check on the received message for itself, and then compares if the checksum values match.  If not, the message is discarded.  
 
+The message strings transmitted between the pro mini devices would look something like:
+
+`*message string@f`
+
+Here, the `*` is used to identify the start of a message, the `@` is used to identify the end of the message and that the next byte is the checksum value.  The transmission is also made with a `\n` character at the end, but this is discarded.  
+
 
 
 
