@@ -6,7 +6,7 @@
 - IR Serial transmission at 4800 Baud.
 - Transmit/receive upto 29 bytes (currently, extensible).
 - Message corruption detection implemented with a CRC checksum.
-- Pin footprint can easily connect to an expansion header of the Pololu 3Pi+ mobile robot. 
+- Designed to conveniently fit to an expansion header of the Pololu 3Pi+ mobile robot. 
 
 ## Summary
 
