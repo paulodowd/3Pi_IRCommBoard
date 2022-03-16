@@ -26,7 +26,7 @@ When the Master device requests the latest message from the pro mini Slave devic
 
 This means that no messages are available.  Otherwise, the Master can parse the received bytes over I2C and use the `!` to identify the end of the string (more details below).  
 
-If the Master is to set a string for the pro mini Slave to transmit over IR, this should be sent over I2C with no terminating character (e.g., no newline, or anything specific, just the string you wish to transmit).  Here, it is unknown (not tested!) what will happen if your string has an `*`, `\n` or `!` in it - it will probably break functionality!
+If the Master is to set a string for the pro mini Slave to transmit over IR, this should be sent over I2C with no terminating character (e.g., no newline, or anything specific, just the string you wish to transmit).  Here, it is unknown (not tested!) what will happen if your string has an `*`, `\n` or `!` in it - it will probably break functionality!  Whilst this is inconsistent from the format used for messages between the pro mini Slave devices, it presents the simplest usage/interface when working with the Master device - all the tokens and CRC are handled for the user.
 
 Software is still sketchy early work for proof-of-concept.
 
