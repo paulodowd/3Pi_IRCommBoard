@@ -11,11 +11,17 @@ The message strings transmitted between the pro mini devices would look somethin
 
 Here, the `*` is used to identify the start of a message, the `@` is used to identify the end of the message and that the next byte is the checksum value.  In the example above, I haven't used the correct checksum value, it is just an illustrative example.  The transmission is also made with a `\n` character at the end, but this is discarded.  
 
+At the moment, the pro mini firmware will only store 1 message, the latest message received.  Furthermore, it is programmed to erase this message after 1 second.  This suits the intended use of the board, but will likely need updating for other uses.  
 
+When the Master device requests the latest message from the pro mini Slave device, it will receive a string terminated with a `!` character.  If the Master receives:
 
+`!` 
 
+This means that no messages are available.  Otherwise, the Master can parse the received bytes over I2C and use the `!` to identify the end of the string (more details below).  
 
-Software is still very sketchy early work that has passed proof-of-concept.
+If the Master is to set a string for the pro mini Slave to transmit over IR, this should be sent over I2C with no terminating character (e.g., no newline, or anything specific, just the string you wish to transmit).  Here, it is unknown (not tested!) what will happen if your string has an `*`, `\n` or `!` in it - it will probably break functionality!
+
+Software is still sketchy early work for proof-of-concept.
 
 ## Important Considerations
 
