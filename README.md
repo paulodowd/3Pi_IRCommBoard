@@ -1,6 +1,8 @@
 # 3Pi_IRCommBoard (work in progress)
 
+<p align="center">
 <img width="80%" src="https://github.com/paulodowd/3Pi_IRCommBoard/blob/main/images/prototype_on_robots.jpg?raw=true">
+  </p>
 
 ## Features
 
