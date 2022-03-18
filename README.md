@@ -10,6 +10,7 @@
 - IR Serial transmission at 4800 Baud.
 - Transmit/receive upto 28 bytes (currently, extensible).
 - Range can be reduced/set with a trimmer potentiometer.
+- Effective IR transmit range approximately 30cm.
 - Message corruption detection implemented with a CRC checksum.
 - Designed to conveniently fit to an expansion header of the Pololu 3Pi+ mobile robot. 
 
