@@ -37,6 +37,8 @@ unsigned long msg_ttl; // msg time to live
 
 unsigned long tx_ts;    // transmit time-stamp
 unsigned long tx_delay; // delay between tx
+unsigned long tx_delay_min;
+unsigned long tx_delay_extra;
 
 // Flags
 boolean BROADCAST = false;
@@ -45,7 +47,7 @@ boolean PROCESS_MSG = false;
 #define LED_G 10
 #define LED_R 11
 
-
+#define DEBUG_LED 13
 
 void setup() {
 
@@ -63,6 +65,10 @@ void setup() {
   pinMode( LED_G, OUTPUT );
   pinMode( LED_B, OUTPUT );
 
+  // Debugging LED
+  pinMode(DEBUG_LED, OUTPUT );
+  digitalWrite(DEBUG_LED, LOW);
+
   // Input pots
   pinMode( POT_A, INPUT );
   pinMode( POT_B, INPUT );
@@ -73,6 +79,9 @@ void setup() {
   memset( rx_buf, 0, sizeof( rx_buf ));
   memset( rx_msg, 0, sizeof( rx_msg ));
 
+  // Set initial tx_delay variables
+  tx_delay_min = 500;
+  tx_delay_extra = 500;
   
 
   // Setup Timer 2 to help generate a 38khz signal.
@@ -131,8 +140,8 @@ void initRandomSeed() {
 // to allow for receipt, and pad/vary
 // by upto 50ms(?)
 void setTXDelay() {
-  float t = (float)random(0, 64); // 0:50
-  t += 64; // 35
+  float t = (float)random(0, tx_delay_extra); // 0:50
+  t += tx_delay_min; // 35
   // Insert random delay to help
   // break up synchronous tranmission
   // between robots.
@@ -262,6 +271,27 @@ void newMessageToSend( int len ) {
     count++;
   }
 
+  // We could add in here a special character 
+  // to erase tx_buf and set the board to stop
+  // transmitting.
+  // Have more than just * in the buffer
+  /*
+  if( count > 1 ) {
+
+    // Special first characters
+    if( tx_buf[1] == '!' ) {          // Clear transmit message
+      memset( tx_buf, 0, sizeof( tx_buf ) );
+      return;
+      
+    } else if( tx_buf[1] == '£' ) {   // Set tx_delay period?
+      
+
+    } else if( tx_buf[1] == '#' ) {   // Set RGB?
+
+    }
+  }
+  */
+
   // Add crc
   byte cs;
   int i;
@@ -355,8 +385,11 @@ void loop() {
       // Using Serial.print transmits over
       // IR.  Serial TX is modulated with
       // the 38Khz carrier in hardware. 
+      digitalWrite(DEBUG_LED, HIGH);
       Serial.println( tx_buf );
       Serial.flush(); // wait for send to complete
+      digitalWrite(DEBUG_LED, LOW);
+      
       //disableTX();
 
       // With TX finished, we can receive again
