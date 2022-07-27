@@ -10,6 +10,10 @@ boolean LED;      // debug LED
 unsigned long ts; // general time stamp, timeout for
                   // debug LED.
 
+#define POT_A A0
+#define POT_B A1
+#define POT_C A2
+
 // Two operational states
 #define STATE_IR_TX_ON 1
 #define STATE_IR_TX_OFF 2
@@ -37,6 +41,11 @@ unsigned long tx_delay; // delay between tx
 // Flags
 boolean BROADCAST = false;
 boolean PROCESS_MSG = false;
+#define LED_B 9
+#define LED_G 10
+#define LED_R 11
+
+
 
 void setup() {
 
@@ -48,11 +57,23 @@ void setup() {
 
   // Debug led
   pinMode(13, OUTPUT);
+  
+  // RGB LED
+  pinMode( LED_R, OUTPUT );
+  pinMode( LED_G, OUTPUT );
+  pinMode( LED_B, OUTPUT );
 
+  // Input pots
+  pinMode( POT_A, INPUT );
+  pinMode( POT_B, INPUT );
+  pinMode( POT_C, INPUT );
+  
   // Set message buffers to invalid (empty) state
   memset( tx_buf, 0, sizeof( tx_buf ));
   memset( rx_buf, 0, sizeof( rx_buf ));
   memset( rx_msg, 0, sizeof( rx_msg ));
+
+  
 
   // Setup Timer 2 to help generate a 38khz signal.
   setupTimer2();
@@ -99,17 +120,45 @@ void initRandomSeed() {
   randomSeed( r );
 }
 
+// Attempting an asynchronous send
+// and listen procedure because we
+// can't do both at the same time.
+// https://lucidar.me/en/serialib/most-used-baud-rates-table/
+// We are using 4800 baud, which is 
+// 4800 bits per second.
+// 1.042ms per byte.
+// So we space transmission by 35ms
+// to allow for receipt, and pad/vary
+// by upto 50ms(?)
 void setTXDelay() {
-
-
-  float t = (float)random(0, 10000);
-  t /= 10000;
-  t *= 400;
-  t += 100;
+  float t = (float)random(0, 64); // 0:50
+  t += 64; // 35
   // Insert random delay to help
   // break up synchronous tranmission
   // between robots.
   tx_delay = (unsigned long)t;
+}
+
+void setRGB( int r, int g, int b ) {
+  if( r == 0 ) {
+    digitalWrite( LED_R, LOW );
+  } else {
+    digitalWrite( LED_R, HIGH );
+  }
+
+  if( g == 0 ) {
+    analogWrite( LED_G, 0 );
+  } else {
+    analogWrite( LED_G, 128 );
+  }
+
+
+  if( b == 0 ) {
+    analogWrite( LED_B, 0 );
+  } else {
+    analogWrite( LED_B, 128 );
+  }
+  
 }
 
 // This ISR simply toggles the state of
@@ -124,7 +173,9 @@ ISR( TIMER2_COMPA_vect ) {
 // serial TX.
 void setupTimer2() {
 
+  // Termporarily stop interupts
   cli();
+  
   // Setup Timer 2 to fire ISR every 38khz
   // Enable CTC mode
   TCCR2A = 0;
@@ -150,7 +201,6 @@ void setupTimer2() {
   sei();
 
 }
-
 
 
 byte CRC( String in_string ) {
@@ -240,33 +290,25 @@ void newMessageToSend( int len ) {
 // UART register to disable RX functionality.
 // When we re-enable it, this has the beneficial
 // side-effect of clearing the input buffer.
+
 void disableRX() {
+  cli();
   UCSR0B &= ~( 1 << RXEN0 );
+  UCSR0B &= ~( 1 << RXCIE0 );
+  sei();
 }
 
 // Re-enable the serial port RX hardware.
 void enableRX() {
 
+  
+  cli();
   UCSR0A &= ~(1 << FE0);
   UCSR0A &= ~(1 << DOR0);
   UCSR0A &= ~(1 << UPE0);
   UCSR0B |= ( 1 << RXEN0 );
-
-}
-
-// We need to stop the 38khz carrier
-// when no serial print is happening,
-// otherwise we saturate the environment
-// with a continuous 38khz signal
-void disableTX() {
-  // Set timer2 prescale to 0,0,0 (off)
-  TCCR2B = 0;
-}
-
-void enableTX() {
-
-  // Set prescale back to how it was
-  TCCR2B |= (1 << CS20);
+  UCSR0B |= ( 1 << RXCIE0 );
+  sei();
 }
 
 // Clears our received buffer
@@ -276,8 +318,11 @@ void resetRxBuf() {
   memset( rx_buf, 0, sizeof( rx_buf ) );
 }
 
+
+
 void loop() {
 
+ 
 
   // Toggle whether we are broadcasting
   // or listening for IR messages
@@ -332,7 +377,9 @@ void loop() {
   if ( millis() - ts > 100 ) {
     ts = millis();
     digitalWrite( 13, LOW );
-
+    setRGB( 1, 0, 0 );
+    //analogWrite(LED_R, 255 );
+    //analogWrite(LED_G, 0);
     // Debug
     //Serial.print("last message: ");
     //Serial.print( rx_msg );
@@ -452,7 +499,9 @@ void loop() {
               // Flash so we can see when robots are
               // receiving messages correctly
               digitalWrite(13, HIGH );
-
+              //analogWrite(LED_R, 0 );
+              //analogWrite(LED_G, 255);
+              setRGB( 0, 1, 0 );
 
               // Make sure where we will store this
               // received message is clear.
